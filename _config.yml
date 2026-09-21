@@ -1,0 +1,8 @@
+collections:
+  unitask:
+    output: true
+    permalink: /unity/unitask/:title/
+
+  csharp:
+    output: true
+    permalink: /csharp/:title/

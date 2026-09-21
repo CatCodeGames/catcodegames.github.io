@@ -1,0 +1,6 @@
+unitask:
+  title: UniTask
+  url: /unity/unitask/
+  parent: unity
+  description: Заметки об асинхронном коде в Unity.
+  collection: unitask

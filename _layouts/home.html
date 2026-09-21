@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Название страницы</title>
+
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/components.css">
+    <link rel="stylesheet" href="/assets/home.css">
+</head>
+
+<body>
+    <div class="page">
+        <main>
+            <!-- Приветственная часть -->
+            <header class="intro">
+                <div class="site-name">CatCodeGames</div>
+
+                <div class="intro-text">
+                    <p>
+                        Технические заметки и небольшие статьи о разработке на Unity и C#.
+                    </p>
+                    <p>
+                        От простых вещей и практических приёмов до архитектуры и разбора привычных инструментов.<br>
+                        Код должен быть не только рабочим, но и понятным человеку.
+                    </p>
+                </div>
+            </header>
+
+            <!-- Основные категории -->
+            <div class="categories" aria-label="Разделы сайта">
+
+                <section class="category">
+                    <!-- <h1 class="category-title"> Unity </h1> -->
+                    <div class="topics">
+                        <div class="topic">
+
+                            <a class="topic-header" href="/unity/unitask/">
+                                <h3>UniTask</h3>
+                                <div class="topic-meta">
+                                    <span>Все заметки</span>
+                                    <span class="topic-arrow">→</span>
+                                </div>
+                            </a>
+
+                            {% assign posts = site.unitask | sort: "date" | reverse %}
+                            {% for post in posts limit:3 %}
+                            <a class="post-item" href="{{ post.url | relative_url }}">
+                                <div class="post-main">
+                                    <div class="post-title">
+                                        {{ post.title }}
+                                    </div>
+                                    {% if post.description %}
+                                    <div class="post-description">
+                                        {{ post.description }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="post-meta">
+                                    <time datetime="{{ post.date | date_to_xmlschema }}">
+                                        {{ post.date | date: "%d.%m.%Y" }}
+                                    </time>
+                                    <span class="post-arrow">→</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+        </main>
+        {% include site-footer.html %}
+    </div>
+</body>
+
+</html>

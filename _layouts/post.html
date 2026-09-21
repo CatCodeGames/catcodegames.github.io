@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page.title }}</title>
+
+    <link rel="stylesheet" href="/assets/variables.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/components.css">
+    <link rel="stylesheet" href="/assets/post.css">
+    <link rel="stylesheet" href="/assets/rouge.css">
+</head>
+
+<body>
+    <div class="page">
+        <main>
+
+            <nav class="breadcrumbs">
+                <a href="/">Главная</a>
+                {% assign topic = site.data.topics[page.topic] %}
+                <span>/</span>
+                <a href="{{ topic.url }}">{{ topic.title }}</a>
+                <span>/</span>
+                <span>{{ page.title }}</span>
+            </nav>
+
+            <article class="post">
+
+                <!-- <h1>{{ page.title }}</h1> -->
+
+                <div class="post-content">
+                    {{ content }}
+                </div>
+
+            </article>
+
+            {% assign topic = site.data.topics[page.topic] %}
+            {% if topic.collection %}
+            {% assign posts = site[topic.collection] | sort: "order" %}
+            {% for post in posts %}
+            {% if post.url == page.url %}
+            {% assign current_index = forloop.index0 %}
+            {% endif %}
+            {% endfor %}
+
+            {% assign prev_index = current_index | minus: 1 %}
+            {% assign next_index = current_index | plus: 1 %}
+            <nav class="post-navigation">
+                {% if prev_index >= 0 %}
+                <a href="{{ posts[prev_index].url }}" class="post-navigation__prev">
+                    <span class="post-navigation__label">
+                        <span class="post-navigation__arrow">←</span> Предыдущая
+                    </span> <span class="post-navigation__title">
+                        {{ posts[prev_index].title }}
+                    </span>
+                </a>
+                {% else %}
+                <div></div>
+                {% endif %}
+
+                {% if next_index < posts.size %} <a href="{{ posts[next_index].url }}" class="post-navigation__next">
+                    <span class="post-navigation__label">
+                        Следующая <span class="post-navigation__arrow">→</span>
+                    </span> <span class="post-navigation__title">
+                        {{ posts[next_index].title }}
+                    </span>
+                    </a>
+                    {% endif %}
+            </nav>
+            {% endif %}
+        </main>
+        {% include site-footer.html %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+/* =========================================================
+   Навигация
+   ========================================================= */
+
+.breadcrumbs {
+    margin-bottom: 32px;
+
+    color: #999;
+    font-size: 14px;
+}
+
+.breadcrumbs a {
+    color: #999;
+}
+
+.breadcrumbs a:hover {
+    color: #fff;
+}
+
+.breadcrumbs span {
+    margin: 2 2px;
+    color: #555;
+}
+
+/* =========================================================
+   Статья
+   ========================================================= */
+
+
+.post-main {
+    min-width: 0;
+    transition: transform 0.15s ease;
+}
+
+.post-item:hover .post-main {
+    transform: translateX(6px);
+}
+
+.post-description {
+    max-width: 680px;
+
+    color: #666;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-top: 2px;
+
+    color: #666;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.post-meta time {
+    font-variant-numeric: tabular-nums;
+}
+
+.post-arrow {
+    font-size: 16px;
+
+    transition:
+        transform 0.15s ease,
+        color 0.15s ease;
+}
+
+.post-item:hover .post-arrow {
+    color: #fff;
+    transform: translateX(3px);
+}

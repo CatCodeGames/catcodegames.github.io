@@ -1,0 +1,56 @@
+/* Вступление */
+
+.intro {
+    max-width: 650px;
+    margin-bottom: 56px;
+}
+
+
+/* Категории */
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+
+/* Тема */
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+}
+
+.topic-header h3 {
+    margin: 0;
+}
+
+
+/* Статья */
+
+.topic-post {
+    margin-bottom: 18px;
+}
+
+.topic-post-header {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+}
+
+.topic-post-header time {
+    flex: 0 0 45px;
+
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.topic-post p {
+    margin: 2px 0 0 61px;
+
+    color: #999;
+    font-size: 0.9rem;
+}

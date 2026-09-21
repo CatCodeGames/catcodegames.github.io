@@ -1,0 +1,84 @@
+.highlight pre {
+    background: #202020;
+    color: #CCCCCC;
+    margin: 24px 0;
+    padding: 16px 16px;
+    overflow-x: auto;
+    border-radius: 8px;
+    line-height: 1.2;
+}
+
+/* Комментарии */
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs {
+    color: #6A9954;
+}
+
+/* Ключевые слова, встроенные конструкции, имена */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .nb,
+.highlight .nt {
+    color: #579CD6;
+}
+
+/* Строки, функции, секции, атрибуты, литералы, типы */
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .s1,
+.highlight .ss,
+.highlight .nf,
+.highlight .fm,
+.highlight .na,
+.highlight .nl,
+.highlight .nn {
+    color: #CE9178;
+}
+
+/* Удаления, селекторы, мета */
+.highlight .err,
+.highlight .nd,
+.highlight .ne,
+.highlight .ni,
+.highlight .no {
+    color: #D4D4D4;
+}
+
+/* Атрибуты */
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+    color: #9DDCFE;
+}
+
+/* Символы, маркеры, ссылки */
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .il,
+.highlight .o,
+.highlight .ow {
+    color: #00b0e8;
+}
