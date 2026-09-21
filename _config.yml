@@ -6,3 +6,6 @@ collections:
   csharp:
     output: true
     permalink: /csharp/:title/
+
+plugins:
+  - jekyll-sitemap
