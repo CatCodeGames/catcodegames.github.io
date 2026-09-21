@@ -77,11 +77,16 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    
     max-width: 45%;
+    min-width: 0;
+
     color: var(--color-text-mid);
     text-decoration: none;
-    font-size: 0.8rem;
-    line-height: 1rem;
+
+    font-size: 14px;
+    line-height: 1.4;
+
     transition: color 0.15s ease;
 }
 
@@ -97,6 +102,7 @@
 
 .post-navigation .post-navigation__title {
     font-size: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .post-navigation__arrow {
@@ -110,4 +116,28 @@
 
 .post-navigation__next:hover .post-navigation__arrow {
     transform: translateX(3px);
+}
+
+
+@media (max-width: 600px) {
+    .post-navigation {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .post-navigation a {
+        width: 100%;
+        max-width: none;
+    }
+
+    .post-navigation__next {
+        margin-left: 0;
+        align-items: flex-end;
+    }
+
+    .post-navigation .post-navigation__title 
+    {
+        font-size: .9rem;
+        overflow-wrap: anywhere;
+    }
 }

@@ -82,3 +82,10 @@
 .highlight .ow {
     color: #00b0e8;
 }
+
+
+@media (max-width: 600px) {
+    .highlight pre {
+        font-size: 13px;
+    }
+}

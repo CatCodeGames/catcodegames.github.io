@@ -36,6 +36,7 @@ var utcs = new UniTaskCompletionSource();
 ```
 
 - Через свойство `.Task` получаем связанный с ним `UniTask`, который можно ожидать через `await`:
+
 ``` csharp
 await utcs.Task;
 Debug.Log("Завершено");
