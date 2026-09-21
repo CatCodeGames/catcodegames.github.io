@@ -1,3 +1,6 @@
+url: "https://catcodegames.github.io"
+baseurl: ""
+
 collections:
   unitask:
     output: true
