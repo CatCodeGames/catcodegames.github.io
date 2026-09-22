@@ -3,7 +3,7 @@ layout: post
 title: "UniTaskCompletionSource"
 date: 2026-09-10
 order: 10
-description: "Почему UniTask стоит возвращать напрямую, а не прятать его вместе с данными."
+description: "Как вручную завершить UniTask и сохранить результат для последующих ожиданий."
 topic: unitask
 ---
 
