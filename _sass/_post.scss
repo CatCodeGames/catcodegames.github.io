@@ -1,0 +1,235 @@
+/* =========================================================
+   Текст статьи
+   ========================================================= */
+
+.post-content {
+    line-height: 1.7;
+}
+
+.post-content h1 {
+    margin-top: 52px;
+    margin-bottom: 24px;
+}
+
+// Первый заголовок статьи стоит сразу под хлебными крошками
+.post-content > h1:first-child {
+    margin-top: 0;
+}
+
+.post-content h2 {
+    margin-top: 48px;
+    margin-bottom: 20px;
+}
+
+.post-content h3 {
+    margin-top: 40px;
+    margin-bottom: 16px;
+}
+
+// Маркеры уровня заголовка в стиле исходника Markdown.
+// Чтобы отключить, достаточно удалить этот блок.
+.post-content h2::before,
+.post-content h3::before {
+    color: var(--color-accent);
+    font-family: var(--font-meta);
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.post-content h2::before {
+    content: "## ";
+}
+
+.post-content h3::before {
+    content: "### ";
+}
+
+.post-content ul,
+.post-content ol {
+    margin: 0 0 1.2em;
+    padding-left: 1.5em;
+}
+
+/* Раскрывающийся блок <details>: необязательное пояснение.
+   Закрытый — одна строка-переключатель, открытый — оформлен как реплика автора. */
+
+.post-content details {
+    margin: 24px 0;
+}
+
+.post-content summary {
+    display: inline-block;
+
+    cursor: pointer;
+    list-style: none;
+
+    color: var(--color-text-muted);
+    font-size: 0.94em;
+
+    transition: color var(--transition-fast);
+}
+
+// Убираем стандартный треугольник браузера, ставим свой
+.post-content summary::-webkit-details-marker {
+    display: none;
+}
+
+.post-content summary::before {
+    content: "▸";
+    display: inline-block;
+    width: 1.2em;
+
+    color: var(--color-accent);
+    font-family: var(--font-meta);
+}
+
+.post-content details[open] > summary::before {
+    content: "▾";
+}
+
+.post-content summary:hover {
+    color: var(--color-text-accent);
+}
+
+.post-content summary:focus-visible {
+    outline: 1px dashed var(--color-accent);
+    outline-offset: 3px;
+}
+
+// Содержимое раскрытого блока: как реплика автора
+.post-content details > :not(summary) {
+    margin-left: 0.35em;
+    padding-left: 14px;
+
+    border-left: 1px dashed var(--color-text-subtle);
+
+    color: var(--color-text-subtle);
+    font-size: 0.9em;
+}
+
+.post-content details > summary + * {
+    margin-top: 12px;
+    padding-top: 0;
+}
+
+// Абзацы внутри идут без зазоров, чтобы линия слева была непрерывной
+.post-content details > p {
+    margin-bottom: 0;
+    padding-bottom: 12px;
+}
+
+.post-content details > :last-child {
+    padding-bottom: 0;
+}
+
+.post-content a {
+    color: var(--color-link);
+    text-decoration: underline;
+}
+
+.post-content a:visited {
+    color: var(--color-link-visited);
+}
+
+.post-content a:hover {
+    color: var(--color-text-accent);
+}
+
+
+/* =========================================================
+   Навигация между статьями
+   ========================================================= */
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding-top: 24px;
+}
+
+.post-navigation a {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    max-width: 45%;
+    min-width: 0;
+
+    color: var(--color-text-muted);
+
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+
+    transition: color var(--transition-fast);
+}
+
+.post-navigation a:hover {
+    color: var(--color-text-accent);
+}
+
+.post-navigation__next {
+    margin-left: auto;
+    text-align: right;
+    align-items: flex-end;
+}
+
+.post-navigation__label {
+    font-family: var(--font-meta);
+    font-size: var(--font-size-xs);
+}
+
+.post-navigation__title {
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.post-navigation__arrow {
+    display: inline-block;
+    transition:
+        transform var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.post-navigation a:hover .post-navigation__arrow,
+.post-navigation a:focus-visible .post-navigation__arrow {
+    color: var(--color-accent);
+}
+
+@media (hover: hover) {
+    .post-navigation__prev:hover .post-navigation__arrow {
+        transform: translateX(-3px);
+    }
+
+    .post-navigation__next:hover .post-navigation__arrow {
+        transform: translateX(3px);
+    }
+}
+
+.post-navigation__prev:focus-visible .post-navigation__arrow {
+    transform: translateX(-3px);
+}
+
+.post-navigation__next:focus-visible .post-navigation__arrow {
+    transform: translateX(3px);
+}
+
+
+@media (max-width: $breakpoint-mobile) {
+    .post-navigation {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .post-navigation a {
+        width: 100%;
+        max-width: none;
+    }
+
+    .post-navigation__next {
+        margin-left: 0;
+    }
+
+    .post-navigation__title {
+        font-size: 0.9rem;
+    }
+}

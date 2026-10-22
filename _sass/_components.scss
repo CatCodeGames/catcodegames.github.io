@@ -1,0 +1,149 @@
+/* =========================================================
+   Хлебные крошки
+   ========================================================= */
+
+// Хлебные крошки: Главная / UniTask / IUniTaskSource
+.breadcrumbs {
+    margin-bottom: 32px;
+
+    color: var(--color-text-muted);
+    font-family: var(--font-meta);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.breadcrumbs a {
+    color: var(--color-text-muted);
+}
+
+.breadcrumbs a:hover {
+    color: var(--color-accent);
+}
+
+.breadcrumbs__sep {
+    margin: 0 4px;
+    color: var(--color-text-subtle);
+}
+
+// Текущая страница светлее ссылок: видно, где находишься, но без лишнего веса
+.breadcrumbs__current {
+    color: var(--color-text-accent);
+}
+
+
+/* =========================================================
+   Элемент списка статей
+   Используется на главной, на странице темы и на странице 404.
+   ========================================================= */
+
+.post-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: start;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid var(--color-border);
+
+    color: inherit;
+}
+
+.post-main {
+    min-width: 0;
+    transition: transform var(--transition-fast);
+}
+
+.post-description {
+    max-width: 680px;
+
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-sm);
+    line-height: 1.35;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-top: 2px;
+
+    color: var(--color-text-subtle);
+    font-family: var(--font-meta);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+}
+
+.post-meta time {
+    font-variant-numeric: tabular-nums;
+}
+
+.post-arrow {
+    font-size: 16px;
+
+    transition:
+        transform var(--transition-fast),
+        color var(--transition-fast);
+}
+
+// Уже прочитанная заметка: стрелка фиолетовая, как посещённая ссылка.
+// Название не перекрашивается, чтобы список оставался ровным.
+.post-item:visited .post-arrow {
+    color: var(--color-link-visited);
+}
+
+// Сдвиг только на устройствах с мышью: на сенсорных экранах hover «залипает» после нажатия.
+// Тот же эффект показывается при фокусе с клавиатуры.
+@media (hover: hover) {
+    .post-item:hover .post-main {
+        transform: translateX(6px);
+    }
+
+    .post-item:hover .post-arrow {
+        color: var(--color-accent);
+        transform: translateX(3px);
+    }
+}
+
+.post-item:focus-visible .post-main {
+    transform: translateX(6px);
+}
+
+.post-item:focus-visible .post-arrow {
+    color: var(--color-accent);
+    transform: translateX(3px);
+}
+
+// На узком экране дата уходит под название, а стрелка скрывается,
+// чтобы название и описание занимали всю ширину
+@media (max-width: $breakpoint-mobile) {
+    .post-item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2px;
+    }
+
+    .post-arrow {
+        display: none;
+    }
+}
+
+
+// Линии только между статьями. Под последней линии нет:
+// иначе она дублирует линию подвала и выглядит как ошибка вёрстки.
+.post-item:last-child {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   Полный список статей (страница темы, 404)
+   ========================================================= */
+
+.post-list {
+    margin-top: 32px;
+}
+
+.post-list .post-item {
+    padding: 16px 0;
+}

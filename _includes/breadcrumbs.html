@@ -1,0 +1,48 @@
+{%- comment -%}
+    Хлебные крошки: Главная / Тема / Статья.
+    Для статьи и страницы темы название темы берётся из _data/topics.yml,
+    для остальных страниц — из title страницы.
+    Если у страницы есть short_title, показывается он: полный title нужен для поисковой выдачи.
+{%- endcomment -%}
+{%- assign topic = site.data.topics[page.topic] -%}
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{{ '/' | relative_url }}">Главная</a>
+    {%- if topic and page.layout == "post" %}
+    <span class="breadcrumbs__sep">/</span>
+    <a href="{{ topic.url | relative_url }}">{{ topic.title }}</a>
+    <span class="breadcrumbs__sep">/</span>
+    <span class="breadcrumbs__current" aria-current="page">{{ page.short_title | default: page.title }}</span>
+    {%- elsif topic %}
+    <span class="breadcrumbs__sep">/</span>
+    <span class="breadcrumbs__current" aria-current="page">{{ topic.title }}</span>
+    {%- else %}
+    <span class="breadcrumbs__sep">/</span>
+    <span class="breadcrumbs__current" aria-current="page">{{ page.short_title | default: page.title }}</span>
+    {%- endif %}
+</nav>
+
+{%- comment -%}
+    Те же крошки в виде микроразметки BreadcrumbList для поисковиков.
+    Google показывает их в выдаче вместо адреса: «CatCodeGames › UniTask › IUniTaskSource».
+{%- endcomment -%}
+{%- assign crumb_home = "/" | absolute_url -%}
+{%- assign crumb_current = page.url | absolute_url -%}
+{%- assign crumb_current_name = page.short_title | default: page.title -%}
+{%- if topic and page.layout != "post" -%}
+    {%- assign crumb_current_name = topic.title -%}
+{%- endif %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": {{ site.title | jsonify }}, "item": {{ crumb_home | jsonify }} },
+        {%- if topic and page.layout == "post" %}
+        { "@type": "ListItem", "position": 2, "name": {{ topic.title | jsonify }}, "item": {{ topic.url | absolute_url | jsonify }} },
+        { "@type": "ListItem", "position": 3, "name": {{ crumb_current_name | jsonify }}, "item": {{ crumb_current | jsonify }} }
+        {%- else %}
+        { "@type": "ListItem", "position": 2, "name": {{ crumb_current_name | jsonify }}, "item": {{ crumb_current | jsonify }} }
+        {%- endif %}
+    ]
+}
+</script>

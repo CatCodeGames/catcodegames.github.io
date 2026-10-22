@@ -1,8 +1,9 @@
 <footer class="site-footer">
-    <span>CatCodeGames</span>
+    <!-- Дата берётся из времени сборки сайта -->
+    <span>CatCodeGames · обновлено&nbsp;<time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: "%d.%m.%Y" }}</time> · github&nbsp;pages</span>
 
     <nav aria-label="Дополнительные ссылки">
-        <a href="{{ '/about/' | relative_url }}">О сайте</a>
+        <a href="{{ '/about/' | relative_url }}">Об авторе</a>
         <a href="https://github.com/CatCodeGames">GitHub</a>
         <a href="https://www.youtube.com/channel/UC8u1fCbyRv_DrlBx2VMcGGA">YouTube</a>
     </nav>

@@ -1,3 +1,41 @@
 ---
-layout : about
+layout: default
+title: Об авторе
+description: "Дмитрий Вьючнов, Unity-разработчик. Около десяти лет в геймдеве. Принципы, подход к коду и зачем этот сайт."
 ---
+{% include breadcrumbs.html %}
+
+{%- comment -%}
+    Фото появится само, как только файл assets/img/photo.jpg окажется в проекте.
+    Подойдёт квадратный кадр примерно 300×300 px.
+{%- endcomment -%}
+{% assign photo = site.static_files | where: "path", "/assets/img/photo.jpg" | first %}
+
+<article class="about post-content">
+
+    <h1>Об авторе</h1>
+
+    <div class="about-intro">
+        {% if photo %}
+        <img class="about-photo" src="{{ photo.path | relative_url }}" alt="Дмитрий Вьючнов" width="120" height="120">
+        {% endif %}
+
+        <div>
+            <p class="about-hello">Привет! Меня зовут Дмитрий Вьючнов.</p>
+        </div>
+    </div>
+
+    <p>
+        Этот сайт — моя записная книжка. За годы работы накапливаются приёмы, шаблоны и решения,
+        которые жалко терять. Здесь они записаны так, чтобы их можно было найти и через год — мне и всем, кому пригодится.
+    </p>
+
+    <ul class="about-links">
+         <!-- Заполнить и раскомментировать:
+        <li><span class="about-links__label">github</span> <a href="https://github.com/CatCodeGames">github.com/CatCodeGames</a></li>       
+        <li><span class="about-links__label">telegram</span> <a href="https://t.me/USERNAME">@USERNAME</a></li>
+        <li><span class="about-links__label">email</span> <a href="mailto:ADDRESS">ADDRESS</a></li>
+        -->
+    </ul>
+
+</article>

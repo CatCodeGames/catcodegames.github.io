@@ -1,0 +1,48 @@
+---
+layout: default
+title: Страница не найдена
+permalink: /404.html
+sitemap: false
+---
+{% include breadcrumbs.html %}
+
+<h1>Страница не найдена</h1>
+
+<p>
+    Такой страницы нет. Возможно, адрес изменился или в нём опечатка.
+</p>
+<p>
+    Все заметки собраны в разделах ниже.
+</p>
+
+<div class="post-list">
+    {% for entry in site.data.topics %}
+    {% assign topic = entry[1] %}
+    <a class="post-item" href="{{ topic.url | relative_url }}">
+        <div class="post-main">
+            <div class="post-title">
+                {{ topic.title }}
+            </div>
+            {% if topic.description %}
+            <div class="post-description">
+                {{ topic.description }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="post-meta">
+            <span class="post-arrow">→</span>
+        </div>
+    </a>
+    {% endfor %}
+
+    <a class="post-item" href="{{ '/' | relative_url }}">
+        <div class="post-main">
+            <div class="post-title">
+                Главная
+            </div>
+        </div>
+        <div class="post-meta">
+            <span class="post-arrow">→</span>
+        </div>
+    </a>
+</div>

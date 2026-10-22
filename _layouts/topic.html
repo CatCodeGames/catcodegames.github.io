@@ -1,63 +1,35 @@
-<!DOCTYPE html>
-<html lang="ru">
+---
+layout: default
+---
+{% include breadcrumbs.html %}
+{% assign topic = site.data.topics[page.topic] %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header>
+    <h1>{{ topic.title }}</h1>
+</header>
 
-    <title>{{ page.title }}</title>
+<section>
+    {{ content }}
+</section>
 
-    <link rel="stylesheet" href="/assets/style.css">
-    <link rel="stylesheet" href="/assets/components.css">
-    <link rel="stylesheet" href="/assets/topic.css">
-</head>
-
-<body>
-    <div class="page">
-        <main>
-
-            <nav class="breadcrumbs">
-                <a href="/">Главная</a>
-                {% assign topic = site.data.topics[page.topic] %}
-                {% assign section = site.data.sections[topic.parent] %}
-                <!-- <span>/</span>
-            <a href="{{ section.url }}">{{ section.title }}</a> -->
-                <span>/</span>
-                <span>{{ topic.title }}</span>
-            </nav>
-
-            <header>
-                <h1>{{ topic.title }}</h1>
-            </header>
-
-            <section>
-                {{ content }}
-            </section>
-
-            <div class="topics">
-                {% assign posts = site[topic.collection] | sort: "order" %}
-                {% for post in posts %}
-                <a class="post-item" href="{{ post.url | relative_url }}">
-                    <div class="post-main">
-                        <div class="post-title">
-                            {{ post.title }}
-                        </div>
-
-                        {% if post.description %}
-                        <div class="post-description">
-                            {{ post.description }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="post-meta">
-                        <span class="post-arrow">→</span>
-                    </div>
-                </a>
-                {% endfor %}
+<div class="post-list">
+    {% assign posts = site[topic.collection] | sort: "order" %}
+    {% for post in posts %}
+    <a class="post-item" href="{{ post.url | relative_url }}">
+        <div class="post-main">
+            <div class="post-title">
+                {{ post.short_title | default: post.title }}
             </div>
-        </main>
-        {% include site-footer.html %}
-    </div>
-</body>
 
-</html>
+            {% if post.description %}
+            <div class="post-description">
+                {{ post.description }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="post-meta">
+            <span class="post-arrow">→</span>
+        </div>
+    </a>
+    {% endfor %}
+</div>

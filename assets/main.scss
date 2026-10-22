@@ -1,0 +1,13 @@
+---
+# Пустой front matter нужен, чтобы Jekyll скомпилировал файл в main.css
+---
+
+@import
+    "tokens",
+    "base",
+    "layout",
+    "components",
+    "home",
+    "post",
+    "about",
+    "syntax";

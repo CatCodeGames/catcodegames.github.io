@@ -1,0 +1,146 @@
+/* =========================================================
+   Главная: вступление
+   ========================================================= */
+
+.intro {
+    padding: 24px 0 32px;
+}
+
+// Строка заголовка: название слева, знак справа на всю ширину колонки
+.intro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+// Название сайта — главный заголовок h1 главной страницы
+.site-name {
+    margin: 0;
+
+    color: var(--color-text-accent);
+    //font-family: var(--font-meta);
+    font-family: var(--font-mono);
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+// Текст вступления: первая строка основным цветом, пояснение приглушённым
+.intro-text {
+    color: var(--color-text-muted);
+}
+
+.intro-lead {
+    margin-bottom: 8px;
+
+    color: var(--color-text);
+    font-size: 18px;
+}
+
+// Знак =^._.^= справа от названия, как подпись в углу терминала
+.site-mark {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+// Мигающий курсор после знака, как в терминале.
+// Медленный и плавный, чтобы не отвлекал на краю зрения при чтении.
+.site-mark::after {
+    content: "_";
+    animation: cursor-blink 2.4s ease-in-out infinite;
+}
+
+@keyframes cursor-blink {
+    0%, 45%   { opacity: 1; }
+    55%, 90%  { opacity: 0; }
+    100%      { opacity: 1; }
+}
+
+// Если в системе отключена анимация, курсор просто горит
+@media (prefers-reduced-motion: reduce) {
+    .site-mark::after {
+        animation: none;
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .site-name {
+        font-size: 28px;
+    }
+
+    .intro-lead {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   Главная: разделы и темы
+   ========================================================= */
+
+.topics {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    color: inherit;
+}
+
+// Название темы: по смыслу h2, по размеру как раньше
+.topic-title {
+    margin: 0 0 16px;
+
+    font-size: 20px;
+}
+
+.topic-header .topic-title:hover {
+    color: var(--color-text-accent);
+}
+
+.topic-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    color: var(--color-text-muted);
+    font-family: var(--font-meta);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+
+    transition:
+        transform var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.topic-header:hover .topic-meta,
+.topic-header:focus-visible .topic-meta {
+    color: var(--color-text-accent);
+}
+
+.topic-header:hover .topic-arrow,
+.topic-header:focus-visible .topic-arrow {
+    color: var(--color-accent);
+}
+
+@media (hover: hover) {
+    .topic-header:hover .topic-meta {
+        transform: translateX(3px);
+    }
+}
+
+.topic-header:focus-visible .topic-meta {
+    transform: translateX(3px);
+}

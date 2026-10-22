@@ -1,64 +1,72 @@
 ---
 layout: post
-title: "AutoResetUniTaskCompletionSource"
+title: "AutoResetUniTaskCompletionSource: как превратить событие в UniTask"
+short_title: "AutoResetUniTaskCompletionSource"
+slug: auto-reset-unitask-completion-source
+last_modified_at: 2026-10-23
+redirect_from: /unity/unitask/011-AutoResetUniTaskCompletionSource/
 date: 2026-09-11
 order: 11
-description: "Как превратить событие или callback в UniTask и дождаться его через await."
+description: "Как превратить разовое событие или колбэк в UniTask и дождаться его через await."
 topic: unitask
 ---
 
 # AutoResetUniTaskCompletionSource
 
-## Зачем нужен
+Не всё в Unity возвращает `UniTask`. Нажатие кнопки, срабатывание триггера, ответ от SDK — обо всём этом сообщают события и колбэки. Чтобы дождаться их через `await`, их нужно превратить в `UniTask`.
 
-`AutoResetUniTaskCompletionSource` — как и `UniTaskCompletionSource`, позволяет создать `UniTask`, завершением которого можно управлять. Применяется, когда операция не возвращает `UniTask`, но её нужно дождаться через `await`.
+`AutoResetUniTaskCompletionSource` делает именно это. Он создаёт `UniTask`, который завершится тогда, когда вы скажете. А после того как результат забрали, источник возвращается в пул и используется снова.
 
-С помощью `AutoResetUniTaskCompletionSource` **можно преобразовать событие или callback в `UniTask`**, который можно ожидать через `await`.
+> Это вторая из трёх заметок о том, как превращать события и колбэки в `UniTask`. Если нужен результат, который сохранится для всех, кто придёт позже, — это [UniTaskCompletionSource]({% link _unitask/010-UniTaskCompletionSource.md %}).
+{: .aside}
 
-Через свойство `.Task` можно получить связанный с источником `UniTask`. А с помощью следующих методов управлять состоянием операции:
 
-- `TrySetResult()` — успешно завершает операцию;
-- `TrySetCanceled()` — отменяет операцию;
-- `TrySetException()` — завершает операцию с указанной ошибкой.
+## Как это работает
 
-Главное отличие от `UniTaskCompletionSource` — после получения результата `AutoResetUniTaskCompletionSource` **сбрасывает своё состояние и возвращается в пул**. Поэтому он подходит для одноразовых сигналов, когда завершённое состояние не нужно сохранять для последующих ожиданий.
+Источник выдаёт `UniTask` через свойство `.Task`. Этот `UniTask` не завершится сам: его завершают вручную одним из трёх методов:
+
+- `TrySetResult()` — операция завершилась успешно;
+- `TrySetCanceled()` — операция отменена;
+- `TrySetException()` — операция завершилась с ошибкой.
+
+Главная особенность: **после того как `await` получил результат, источник сбрасывается и возвращается в пул**. Вместо того чтобы на каждое ожидание создавать новый объект и потом отдавать его сборщику мусора, `UniTask` берёт объект из пула, а после использования кладёт обратно.
+
+Из этого следует простое правило: **выданный `UniTask` нужно дождаться, и ровно один раз**.
+
+- Если его никто не ждёт, источник не вернётся в пул. Ошибки не будет, но появится лишняя аллокация — то, от чего `UniTask` как раз старается избавиться.
+- Если ждать его второй раз, будет ошибка: источник к этому моменту уже сброшен и, возможно, выдан кому-то другому.
 
 
 ## Как использовать
 
-Работа с `AutoResetUniTaskCompletionSource` сводится к следующим действиям:
+Источник создаётся не через `new`, а через метод `Create()`: так он берётся из пула.
 
-- создаём источник с помощью метода `Create()`:
+```csharp
+var tcs = AutoResetUniTaskCompletionSource.Create();
 
-``` csharp
-var utcs = AutoResetUniTaskCompletionSource.Create();
-```
-
-- Через свойство `.Task` получаем связанный с ним `UniTask`, который можно ожидать через `await`:
-
-``` csharp
-await utcs.Task;
+// Где-то ждём завершения
+await tcs.Task;
 Debug.Log("Завершено");
+
+// Где-то в другом месте сообщаем, что операция закончилась
+tcs.TrySetResult();
 ```
 
-- Когда операция завершена, сообщаем об этом источнику:
+Когда вызывается `TrySetResult()`, код после `await tcs.Task` продолжает выполнение. Как только `await` забрал результат, источник сбрасывается и возвращается в пул.
 
-``` csharp
-utcs.TrySetResult();
-```
-
-После этого связанный `UniTask` считается завершённым, и код после `await utcs.Task` начинает выполняться дальше. Когда `await` получает результат и выходит из задачи, `AutoResetUniTaskCompletionSource` сбрасывает своё внутреннее состояние и возвращается в пул
+Если операция должна вернуть значение, используется `AutoResetUniTaskCompletionSource<T>`, а значение передаётся в `TrySetResult()`.
 
 
-### Пример
-Рассмотрим простой сценарий: нужно дождаться нажатия на кнопку. Например, в туториале может потребоваться дождаться определённого действия игрока.
+## Пример: дождаться нажатия кнопки
+
+Простой сценарий: в туториале нужно дождаться, пока игрок нажмёт кнопку.
 
 ```csharp
 await WaitForClick(_button);
-Debug.Log("Кнопка была нажата");
+Debug.Log("Кнопка нажата");
 ```
 
-Создадим метод `WaitForClick`, принимающий кнопку:
+Напишем метод `WaitForClick`, который принимает кнопку:
 
 ```csharp
 public UniTask WaitForClick(Button button)
@@ -70,150 +78,87 @@ public UniTask WaitForClick(Button button)
 
     void OnClick()
     {
-        button.onClick.RemoveListener(OnClick);        
+        button.onClick.RemoveListener(OnClick);
         tcs.TrySetResult();
     }
 }
 ```
 
-Метод `WaitForClick` подписывается на `onClick` и возвращает `UniTask`, связанный с `AutoResetUniTaskCompletionSource`. Пока кнопка не нажата, этот `UniTask` остаётся незавершённым.
+`WaitForClick` подписывается на `onClick` и сразу возвращает `UniTask`. Пока кнопку не нажали, этот `UniTask` не завершён.
 
-Когда пользователь нажимает кнопку, вызывается метод `OnClick()`. Обработчик отписывается от события и вызывает `TrySetResult()`, завершая ожидаемый `UniTask`. После того как `await` получит результат, `AutoResetUniTaskCompletionSource` сбрасывает своё состояние и возвращается в пул.
+Когда игрок нажимает кнопку, вызывается `OnClick()`. Он отписывается от события и вызывает `TrySetResult()`. `UniTask` завершается, и код после `await` продолжает работу.
 
-> Использование `AutoResetUniTaskCompletionSource` предполагает, что **выданную задачу нужно обязательно дождаться**. Если `UniTask` никто не ждёт, связанный источник не проходит этап получения результата и не возвращается в пул. Это не приводит к ошибке, но приводит к лишним аллокациям. Что немного противоречит самой идее `UniTask` как библиотеки с низкими аллокациями.
+> Для кнопок в `UniTask` уже есть готовый `button.OnClickAsync()`. Здесь кнопка выбрана просто потому, что это самый наглядный пример. Тем же способом можно превратить в `UniTask` любое событие или колбэк.
+{: .aside}
 
 
-### Отмена 
-Чтобы можно было отменить ожидание, метод должен принимать `CancellationToken` и зарегистрировать обработчик отмены через `Register()`.
+## Отмена
+
+Ожидание часто нужно уметь прервать. Например, если окно закрыли раньше, чем игрок нажал кнопку.
+
+Для этого в C# есть `CancellationToken`. Метод принимает токен и через `Register()` подписывается на его отмену:
 
 ```csharp
 public UniTask WaitForClick(Button button, CancellationToken token)
 {
     var tcs = AutoResetUniTaskCompletionSource.Create();
-    CancellationTokenRegistration ctr = default;
+    CancellationTokenRegistration registration = default;
 
     button.onClick.AddListener(OnClick);
-    ctr = token.Register(OnCancel);
+    registration = token.Register(OnCancel);
 
     return tcs.Task;
 
     void OnClick()
     {
         button.onClick.RemoveListener(OnClick);
-        ctr.Dispose();
+        registration.Dispose();
         tcs.TrySetResult();
     }
-    
+
     void OnCancel()
     {
         button.onClick.RemoveListener(OnClick);
-        ctr.Dispose();
+        registration.Dispose();
         tcs.TrySetCanceled();
     }
 }
 ```
-> `CancellationTokenRegistration` объявляется заранее, потому что локальный метод `OnCancel()` использует переменную `ctr`. Если сразу написать `var ctr = token.Register(OnCancel)`, компилятор не позволит использовать `ctr` внутри `OnCancel()`.
 
-Когда вызывается `Cancel()` у `CancellationTokenSource`, токен помечается как отменённый и вызывается обработчик `OnCancel()`. Он отписывает от события и переводит задачу в состояние отмены. Если в этот момент задача ожидается через `await`, будет выброшено исключение `OperationCanceledException`, которое нужно обработать в `try/catch`
+Теперь у ожидания два возможных конца: игрок нажал кнопку или ожидание отменили. В обоих случаях метод снимает обе подписки — и на кнопку, и на отмену.
 
-``` csharp
+Переменная `registration` объявлена заранее, потому что к ней обращаются локальные методы. Если написать сразу `var registration = token.Register(OnCancel);`, компилятор не даст использовать её внутри `OnCancel()`.
+
+Когда токен отменяют, срабатывает `OnCancel()`, и `UniTask` переходит в состояние отмены. Код, который его ждёт, получит исключение `OperationCanceledException`. Его ловят обычным `try/catch`:
+
+```csharp
 try
 {
     await WaitForClick(_button, token);
 }
 catch (OperationCanceledException)
 {
-    Debug.Log("Ожидание нажатия на кнопку отменено");
+    Debug.Log("Ожидание нажатия отменено");
 }
 ```
 
-> При отмене, так же как и при успешном завершении, `AutoResetUniTaskCompletionSource` сбрасывает своё состояние и возвращается в пул после того, как `await` получает результат.
+При отмене источник точно так же сбрасывается и возвращается в пул, как только `await` получит результат.
+
+> Без отмены ожидание может зависнуть навсегда: кнопку уже уничтожили, а метод всё ещё ждёт её нажатия. Код после await так и не выполнится, а источник не вернётся в пул.
+{: .aside}
 
 
+## Когда использовать
 
-## Когда и где использовать
+`AutoResetUniTaskCompletionSource` подходит для разовых событий, результат которых не нужно хранить: нажатие кнопки, столкновение, срабатывание триггера, ответ на запрос.
 
-`AutoResetUniTaskCompletionSource` подходит для разовых событий, результат которых не нужно сохранять: например, для ожидания нажатия кнопки, столкновения, срабатывания триггера и других событий.
+Если результат нужно сохранить для всех, кто придёт позже, лучше взять `UniTaskCompletionSource`:
 
-Также `AutoResetUniTaskCompletionSource` удобно использовать, когда нужно ждать следующее событие. Например, следующий тик таймера или для примера следующее нажатие кнопки:
+| | `UniTaskCompletionSource` | `AutoResetUniTaskCompletionSource` |
+|---|---|---|
+| Результат после завершения | сохраняется | сбрасывается |
+| Сколько раз можно ждать | сколько угодно | ровно один раз |
+| Объект на каждое ожидание | новый | из пула |
+| Типичные случаи | загрузка, инициализация | клики, триггеры, сигналы |
 
-```csharp
-public sealed class ClickService
-{
-    private readonly List<AutoResetUniTaskCompletionSource> _waiters = new();
-    private readonly Button _button;
-
-    public ClickService(Button button)
-    {
-        _button = button;
-        _button.onClick.AddListener(OnClick);
-    }
-
-    public UniTask WaitNextClick()
-    {
-        var tcs = AutoResetUniTaskCompletionSource.Create();
-        _waiters.Add(tcs);
-        return tcs.Task;
-    }
-
-    private void OnClick()
-    {
-        foreach (var tcs in _waiters)
-            tcs.TrySetResult();
-
-        _waiters.Clear();
-    }
-}
-```
-
-Теперь можно дождаться следующего клика:
-
-``` csharp
-await service.WaitNextClick();
-```
-
-После нажатия все текущие ожидания завершаются. После получения результата их источники сбрасываются и возвращаются в пул. Для ожидания следующего события можно снова вызвать `WaitNextClick()`.
-
-Такой подход позволяет разово 
-
-## Когда и где использовать
-
-`AutoResetUniTaskCompletionSource` полезен, когда нужно адаптировать ожидание операции под `async/await`. Он подходит для разовых событий, результат которых не нужно сохранять: например, для ожидания нажатия кнопки, столкновения, срабатывания триггера и других событий.
-
-Также `AutoResetUniTaskCompletionSource` удобно использовать, когда нужно ждать следующее событие. Например, следующий тик таймера или следующее нажатие кнопки:
-
-``` csharp
-public sealed class ClickService
-{
-    private readonly List<AutoResetUniTaskCompletionSource> _waiters = new();
-    private readonly Button _button;
-
-    public ClickService(Button button)
-    {
-        _button = button;
-        _button.onClick.AddListener(OnClick);
-    }
-
-    public UniTask WaitNextClick()
-    {
-        var tcs = AutoResetUniTaskCompletionSource.Create();
-        _waiters.Add(tcs);
-        return tcs.Task;
-    }
-
-    private void OnClick()
-    {
-        foreach (var tcs in _waiters)
-            tcs.TrySetResult();
-
-        _waiters.Clear(); 
-    }
-}
-``` 
-
-Теперь разные классы могут в нужный момент дождаться его следующего клика через `await`:
-``` csharp
-await service.WaitNextClick();
-```
-
-После нажатия все текущие ожидания завершаются. После получения результата их источники сбрасываются и возвращаются в пул. Если потребуется ожидание следующего события, то снова вызвать `WaitNextClick()`.
+Если ожиданий очень много, например каждый кадр, можно пойти ещё дальше и написать свой источник без лишних аллокаций. Об этом — в заметке про [IUniTaskSource]({% link _unitask/012-IUniTaskSource.md %}).

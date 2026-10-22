@@ -1,0 +1,15 @@
+# Запуск из корня репозитория: docker compose -f .docker/compose.yaml up
+# Относительные пути ниже считаются от папки .docker
+name: catcodegames
+
+services:
+  jekyll:
+    build: .
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "4000:4000"
+      - "35729:35729"
+    # Подключается только исходный код. Сборка и кэши остаются внутри контейнера
+    volumes:
+      - ..:/site

@@ -1,0 +1,96 @@
+/* =========================================================
+   Страница «Об авторе»
+   Типографика берётся из .post-content, здесь только отличия.
+   ========================================================= */
+
+.about > h1 {
+    margin-top: 0;
+}
+
+// Вступление: фото слева, приветствие справа
+.about-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+
+    margin-bottom: 8px;
+}
+
+// Небольшое фото с тонкой рамкой, как кадр
+.about-photo {
+    flex: 0 0 auto;
+
+    width: 120px;
+    height: 120px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.about-hello {
+    margin-bottom: 8px;
+
+    color: var(--color-text-accent);
+    font-size: 20px;
+}
+
+// Принципы: маркер «>» в акцентном цвете, как приглашение командной строки
+.post-content .about-principles {
+    padding-left: 0;
+    list-style: none;
+}
+
+.about-principles li {
+    position: relative;
+
+    margin-bottom: 10px;
+    padding-left: 1.6em;
+}
+
+.about-principles li::before {
+    content: ">";
+
+    position: absolute;
+    left: 0;
+
+    color: var(--color-accent);
+    font-family: var(--font-meta);
+}
+
+.about-principles strong {
+    color: var(--color-text-accent);
+}
+
+// Контакты в виде «метка — ссылка», метки моноширинные
+.post-content .about-links {
+    padding-left: 0;
+    list-style: none;
+}
+
+.about-links li {
+    display: flex;
+    gap: 12px;
+}
+
+.about-links__label {
+    flex: 0 0 72px;
+
+    color: var(--color-text-subtle);
+    font-family: var(--font-meta);
+    font-size: var(--font-size-xs);
+    line-height: inherit;
+}
+
+
+@media (max-width: $breakpoint-mobile) {
+    .about-intro {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .about-photo {
+        width: 96px;
+        height: 96px;
+    }
+}

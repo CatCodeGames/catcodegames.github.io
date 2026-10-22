@@ -1,0 +1,100 @@
+/* =========================================================
+   Подсветка кода (Rouge)
+   ========================================================= */
+
+.highlight pre {
+    margin: 24px 0;
+    padding: 16px;
+
+    overflow-x: auto;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+
+    color: var(--code-text);
+    // Моноширинный шрифт визуально крупнее основного, поэтому кегль чуть меньше
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+/* Комментарии */
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs {
+    color: var(--code-comment);
+}
+
+/* Ключевые слова, встроенные типы, теги */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .nb,
+.highlight .nt {
+    color: var(--code-keyword);
+}
+
+/* Строки, функции, атрибуты, метки, пространства имён */
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .s1,
+.highlight .ss,
+.highlight .nf,
+.highlight .fm,
+.highlight .na,
+.highlight .nl,
+.highlight .nn {
+    color: var(--code-string);
+}
+
+/* Ошибки разбора, декораторы, исключения, сущности, константы */
+.highlight .err,
+.highlight .nd,
+.highlight .ne,
+.highlight .ni,
+.highlight .no {
+    color: var(--code-text);
+}
+
+/* Переменные */
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+    color: var(--code-variable);
+}
+
+/* Числа и операторы */
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .il,
+.highlight .o,
+.highlight .ow {
+    color: var(--code-number);
+}
+
+
+@media (max-width: $breakpoint-mobile) {
+    .highlight pre {
+        font-size: var(--font-size-xs);
+    }
+}

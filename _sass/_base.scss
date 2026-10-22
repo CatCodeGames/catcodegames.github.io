@@ -1,0 +1,262 @@
+/* =========================================================
+   Базовые настройки
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--color-bg);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+
+    background:
+        radial-gradient(circle, var(--color-bg-dots) 1px, transparent 1px) 0 0 / 16px 16px,
+        radial-gradient(circle, var(--color-bg-dots) 1px, transparent 1px) 0 0 / 64px 64px,
+        radial-gradient(circle, var(--color-bg-dots) 1px, transparent 1px) 32px 32px / 64px 64px,
+        var(--color-bg);
+}
+
+// Колонка сайта. Flex нужен, чтобы подвал прижимался к низу экрана на коротких страницах.
+.page {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    max-width: var(--content-width);
+    min-height: 100vh;
+    margin: 0 auto;
+
+    // Боковой отступ колонки, он же ширина плавного перехода фона
+    --page-gutter: 48px;
+    padding: 48px var(--page-gutter) 24px;
+
+    // Под текстом сплошной фон, чтобы точки не мешали читать.
+    // По краям колонки фон плавно растворяется в сетке, без резкой границы.
+    // Ширина перехода равна боковому отступу, поэтому текст всегда на сплошном фоне.
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-bg) var(--page-gutter),
+        var(--color-bg) calc(100% - var(--page-gutter)),
+        transparent
+    );
+}
+
+// Контент занимает всё свободное место и выталкивает подвал вниз
+.page > main {
+    flex: 1 0 auto;
+}
+
+
+/* =========================================================
+   Типографика
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 16px;
+
+    color: var(--color-text);
+
+    font-weight: 600;
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+h1 { font-size: 32px; }
+h2 { font-size: 24px; }
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
+h5 { font-size: 16px; }
+h6 { font-size: var(--font-size-sm); }
+
+p {
+    margin: 0 0 16px;
+}
+
+small {
+    font-size: var(--font-size-sm);
+}
+
+
+/* =========================================================
+   Ссылки
+   ========================================================= */
+
+a {
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-text-accent);
+}
+
+// Видимый фокус при навигации с клавиатуры
+a:focus-visible {
+    outline: 1px dashed var(--color-accent);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: var(--color-accent);
+    color: var(--color-bg);
+}
+
+
+/* =========================================================
+   Списки
+   ========================================================= */
+
+ul,
+ol {
+    margin: 0 0 16px;
+    padding-left: 24px;
+}
+
+li {
+    margin-bottom: 6px;
+}
+
+
+/* =========================================================
+   Цитаты и заметки
+   В статьях блок «>» используется для пояснений и собственных мыслей.
+   ========================================================= */
+
+blockquote {
+    margin: 24px 0;
+    padding: 12px 16px;
+
+    border-left: 2px solid var(--color-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--color-surface);
+
+    color: var(--color-text-muted);
+    font-size: 0.94em;
+}
+
+blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+// Inline-код внутри заметки иначе сливается с её подложкой
+blockquote p code,
+blockquote li code {
+    background: var(--color-surface-raised);
+}
+
+// Реплика от автора: необязательная мысль на полях.
+// В Markdown ставится строкой {: .aside} сразу после блока «>».
+// Намеренно тише обычной заметки: без подложки, тонкая пунктирная линия, приглушённый текст.
+blockquote.aside {
+    padding: 0 0 0 14px;
+
+    border-left: 1px dashed var(--color-text-subtle);
+    border-radius: 0;
+    background: none;
+
+    color: var(--color-text-subtle);
+    font-size: 0.9em;
+}
+
+blockquote.aside p code,
+blockquote.aside li code {
+    background: var(--color-surface);
+}
+
+
+/* =========================================================
+   Таблицы
+   ========================================================= */
+
+table {
+    width: 100%;
+    margin: 24px 0;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px 10px;
+
+    border: 1px solid var(--color-border);
+
+    text-align: left;
+}
+
+
+/* =========================================================
+   Код
+   ========================================================= */
+
+code {
+    font-family: var(--font-mono);
+}
+
+p code,
+li code {
+    padding: 2px 5px;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+}
+
+
+/* =========================================================
+   Разделитель и изображения
+   ========================================================= */
+
+hr {
+    margin: 32px 0;
+
+    border: 0;
+    border-top: 1px solid var(--color-border);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+   Мобильные устройства
+   ========================================================= */
+
+@media (max-width: $breakpoint-mobile) {
+    body {
+        font-size: 15px;
+    }
+
+    // Меньше полей по краям, чтобы длинные заголовки и имена классов помещались в строку
+    .page {
+        --page-gutter: 16px;
+        padding: 24px var(--page-gutter) 16px;
+    }
+
+    h1 { font-size: 23px; }
+    h2 { font-size: 21px; }
+    h3 { font-size: 19px; }
+    h4 { font-size: 17px; }
+}

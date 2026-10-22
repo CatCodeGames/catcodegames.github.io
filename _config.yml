@@ -1,14 +1,55 @@
+title: CatCodeGames
+# Короткая подпись для заголовка главной: «CatCodeGames | …»
+tagline: "Заметки о Unity и C#"
+description: "Технические заметки о Unity и C#: практические приёмы и готовые решения — от отдельных деталей до архитектуры."
 url: "https://catcodegames.github.io"
 baseurl: ""
+lang: ru
+locale: ru_RU
+author:
+  name: Дмитрий
+  url: https://catcodegames.github.io/about/
+
+social:
+  name: CatCodeGames
+  links:
+    - https://github.com/CatCodeGames
+    - https://www.youtube.com/channel/UC8u1fCbyRv_DrlBx2VMcGGA
 
 collections:
   unitask:
     output: true
-    permalink: /unity/unitask/:title/
+    permalink: /unity/unitask/:slug/
 
   csharp:
     output: true
-    permalink: /csharp/:title/
+    permalink: /csharp/:slug/
+
+defaults:
+  - scope:
+      type: unitask
+    values:
+      seo:
+        type: BlogPosting
+
+  # Файлы подтверждения поисковиков не должны попадать в sitemap
+  - scope:
+      path: google7c51eefe38b5c769.html
+    values:
+      sitemap: false
+  - scope:
+      path: yandex_70b0a450d742c053.html
+    values:
+      sitemap: false
+
+sass:
+  style: compressed
 
 plugins:
+  - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Папки с точкой в начале (.docker) Jekyll исключает сам
+exclude:
+  - README.md
