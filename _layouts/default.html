@@ -7,6 +7,11 @@
 
     {% seo %}
 
+    <!-- ?v= сбрасывает кэш иконок в браузерах: увеличить при замене файлов -->
+    <link rel="icon" href="{{ '/favicon.ico?v=2' | relative_url }}" sizes="48x48">
+    <link rel="icon" href="{{ '/favicon-96x96.png?v=2' | relative_url }}" type="image/png" sizes="96x96">
+    <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png?v=2' | relative_url }}">
+
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
 </head>
 

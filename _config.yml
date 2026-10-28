@@ -1,5 +1,5 @@
 title: CatCodeGames
-# Короткая подпись для заголовка главной: «CatCodeGames | …»
+# Короткая подпись сайта. Заголовок вкладки главной задаётся в index.html
 tagline: "Заметки о Unity и C#"
 description: "Технические заметки о Unity и C#: практические приёмы и готовые решения — от отдельных деталей до архитектуры."
 url: "https://catcodegames.github.io"
