@@ -78,7 +78,7 @@ var player1 = await loader.LoadAsync();
 var player2 = await loader.LoadAsync();
 ```
 
-`Resources.LoadAsync` сообщает о завершении через событие `completed`, объекта `ResourceRequest`. Превратим эту операцию в `UniTask` с помощью `UniTaskCompletionSource`:
+`Resources.LoadAsync` сообщает о завершении через событие `completed` объекта `ResourceRequest`. Превратим эту операцию в `UniTask` с помощью `UniTaskCompletionSource`:
 
 ```csharp
 public sealed class ResourceLoader

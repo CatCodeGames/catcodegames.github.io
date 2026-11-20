@@ -34,6 +34,8 @@ layout: default
             </div>
         </a>
 
+        <div class="topic-caption">Свежие заметки</div>
+
         {% assign posts = site[topic.collection] | sort: "date" | reverse %}
         {% for post in posts limit:3 %}
         <a class="post-item" href="{{ post.url | relative_url }}">

@@ -187,7 +187,9 @@ private async UniTaskVoid RunAsync()
         _currentStep++;
 
         _stepCompleted[_currentStep].TrySetResult();
-    }   
+    }
+
+    _isRunning = false;
 }
 ```
 

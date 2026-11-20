@@ -106,6 +106,15 @@
     font-size: 20px;
 }
 
+// Подпись над блоком последних заметок темы
+.topic-caption {
+    margin: -4px 0 8px;
+
+    color: var(--color-text-subtle);
+    font-family: var(--font-meta);
+    font-size: var(--font-size-xs);
+}
+
 .topic-header .topic-title:hover {
     color: var(--color-text-accent);
 }

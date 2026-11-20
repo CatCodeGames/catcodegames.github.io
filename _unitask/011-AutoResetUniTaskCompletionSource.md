@@ -120,7 +120,7 @@ public UniTask WaitForClick(Button button, CancellationToken token)
     {
         button.onClick.RemoveListener(OnClick);
         registration.Dispose();
-        tcs.TrySetCanceled();
+        tcs.TrySetCanceled(token);
     }
 }
 ```
